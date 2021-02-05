@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ZodiacServer.NewFolder1;
+using ZodiacServer.Models;
 
 namespace ZodiacServer.Controllers
 {
@@ -22,14 +23,14 @@ namespace ZodiacServer.Controllers
 
         // GET: api/Tests
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Test>>> Getitems()
+        public async Task<ActionResult<IEnumerable<Models.Types>>> Getitems()
         {
             return await _context.items.ToListAsync();
         }
 
         // GET: api/Tests/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Test>> GetTest(long id)
+        public async Task<ActionResult<Models.Types>> GetTest(long id)
         {
             var test = await _context.items.FindAsync(id);
 
@@ -44,9 +45,9 @@ namespace ZodiacServer.Controllers
         // PUT: api/Tests/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTest(long id, Test test)
+        public async Task<IActionResult> PutTest(long id, Models.Types test)
         {
-            if (id != test.Id)
+            if (id != test.id)
             {
                 return BadRequest();
             }
@@ -75,13 +76,13 @@ namespace ZodiacServer.Controllers
         // POST: api/Tests
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Test>> PostTest(Test test)
+        public async Task<ActionResult<Models.Types>> PostTest(Models.Types test)
         {
             _context.items.Add(test);
             await _context.SaveChangesAsync();
 
             //return CreatedAtAction("GetTest", new { id = test.Id }, test);
-            return CreatedAtAction(nameof(GetTest), new { id = test.Id }, test);
+            return CreatedAtAction(nameof(GetTest), new { id = test.id }, test);
         }
 
         // DELETE: api/Tests/5
@@ -102,7 +103,7 @@ namespace ZodiacServer.Controllers
 
         private bool TestExists(long id)
         {
-            return _context.items.Any(e => e.Id == id);
+            return _context.items.Any(e => e.id == id);
         }
     }
 }

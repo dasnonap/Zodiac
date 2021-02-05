@@ -18,19 +18,20 @@ namespace ZodiacServer
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        private readonly IConfiguration _config;
 
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration config)
+        {
+            _config = config;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Context>(opt =>
-                                               opt.UseInMemoryDatabase("TodoList"));
-            
+            services.AddDbContext<Context>(options =>
+               options.UseSqlServer( _config.GetConnectionString( "DefaultConnection" ) )
+            );
+
             services.AddControllers();
 
             /* services.AddSwaggerGen(c =>
@@ -39,10 +40,10 @@ namespace ZodiacServer
             });
             services.AddDbContext<Context>(opt =>
                                                opt.UseInMemoryDatabase("TodoList"));
+            services.AddDbContext<Context>(opt =>
+                                               opt.UseInMemoryDatabase("TodoList"));
 
-            services.AddDbContext<Context>(options =>
-               options.UseSqlServer("Data Source=DESKTOP-U6A27FU\\IVANSQL; Initial Catalog=VideoShop; MultipleActiveResultSets=true; User ID=sa; Password=123456")
-            );
+            
             */
         }
 

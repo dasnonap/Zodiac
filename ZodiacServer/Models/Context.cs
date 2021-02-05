@@ -14,8 +14,8 @@ namespace ZodiacServer.NewFolder1
         {
         }
 
-        public DbSet<Test> items { get; set; }
+        public DbSet<Models.Types> items { get; set; }
 
-        public DbSet<ZodiacServer.Models.Type> Type { get; set; }
+        public DbSet<Models.Types> Type { get; set; }
     }
 }
