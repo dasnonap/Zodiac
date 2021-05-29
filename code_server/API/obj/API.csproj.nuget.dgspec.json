@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Университет\\4 курс\\Дипломна работа\\Сървър\\Zodiac\\code_server\\API\\API.csproj": {}
+    "G:\\Университет\\Иван Михов\\Zodiac\\server\\ZodiacServer\\code_server\\API\\API.csproj": {}
   },
   "projects": {
-    "D:\\Университет\\4 курс\\Дипломна работа\\Сървър\\Zodiac\\code_server\\API\\API.csproj": {
+    "G:\\Университет\\Иван Михов\\Zodiac\\server\\ZodiacServer\\code_server\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Университет\\4 курс\\Дипломна работа\\Сървър\\Zodiac\\code_server\\API\\API.csproj",
+        "projectUniqueName": "G:\\Университет\\Иван Михов\\Zodiac\\server\\ZodiacServer\\code_server\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "D:\\Университет\\4 курс\\Дипломна работа\\Сървър\\Zodiac\\code_server\\API\\API.csproj",
-        "packagesPath": "C:\\Users\\ivanm\\.nuget\\packages\\",
-        "outputPath": "D:\\Университет\\4 курс\\Дипломна работа\\Сървър\\Zodiac\\code_server\\API\\obj\\",
+        "projectPath": "G:\\Университет\\Иван Михов\\Zodiac\\server\\ZodiacServer\\code_server\\API\\API.csproj",
+        "packagesPath": "C:\\Users\\Ivan-PC\\.nuget\\packages\\",
+        "outputPath": "G:\\Университет\\Иван Михов\\Zodiac\\server\\ZodiacServer\\code_server\\API\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\ivanm\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Ivan-PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -76,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.104\\RuntimeIdentifierGraph.json"
         }
       }
     }

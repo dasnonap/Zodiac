@@ -4,8 +4,7 @@ namespace API.Entities
 {
     public class AppUser
     {
-        // [ForeignKey("Type")]
-        public int Id { get; set; }
+        public int AppUserId { get; set; }
 
         public string UserName { get; set; }
 
@@ -18,7 +17,8 @@ namespace API.Entities
         public string Iban { get; set; }
 
         public string Email { get; set; }
-
-        public UserType Type { get; set; }
+        
+        public int UserTypeId { get; set; }
+        public UserType UserType { get; set; }
     }
 }

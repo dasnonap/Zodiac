@@ -3,16 +3,14 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace API.Data.Migrations
+namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210518182845_AddRelationUserandUserType")]
-    partial class AddRelationUserandUserType
+    partial class DataContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,8 +20,10 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.AppUser", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<int>("AppUserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -43,14 +43,20 @@ namespace API.Data.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<int>("UserTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppUserId");
+
+                    b.HasIndex("UserTypeId")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("API.Entities.UserType", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserTypeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -61,25 +67,25 @@ namespace API.Data.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserTypeId");
 
                     b.ToTable("Types");
                 });
 
             modelBuilder.Entity("API.Entities.AppUser", b =>
                 {
-                    b.HasOne("API.Entities.UserType", "Type")
-                        .WithOne("User")
-                        .HasForeignKey("API.Entities.AppUser", "Id")
+                    b.HasOne("API.Entities.UserType", "UserType")
+                        .WithOne("AppUser")
+                        .HasForeignKey("API.Entities.AppUser", "UserTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Type");
+                    b.Navigation("UserType");
                 });
 
             modelBuilder.Entity("API.Entities.UserType", b =>
                 {
-                    b.Navigation("User");
+                    b.Navigation("AppUser");
                 });
 #pragma warning restore 612, 618
         }
