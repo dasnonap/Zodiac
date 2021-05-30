@@ -12,5 +12,7 @@ namespace API.Data
         public DbSet<AppUser> Users { get; set; }
 
         public DbSet<UserType> Types { get; set; }
+        
+        public DbSet<AppFilm> Films { get; set; }
     }
 }
