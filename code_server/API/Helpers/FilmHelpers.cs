@@ -19,10 +19,10 @@ namespace API.Helpers
             AppFilm film = new AppFilm();
             
             string name = formData["name"];
-            string actors = formData["actors"];
             string desc = formData["description"];
             string year = formData["year"];
             string genres = formData["genres"];
+            string actors = formData["actors"];
             string location = "none";
             
             if( new Validator( name ).IsValidField() )

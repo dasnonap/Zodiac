@@ -4,15 +4,30 @@ namespace API.Validators{
 
     public class Validator
     {
-        private string variable;        
+        private string variable;    
+        private int integerVariable;    
         public Validator( string var )
         {
             variable = var;
         }
         
+        public Validator( int integerVar )
+        {
+            integerVariable = integerVar;
+        }
         // Checks if field is empty
         public bool IsValidField(){
             if( variable == "" || variable == null )
+            {
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Checks if variable is valid int
+        public bool IsValidInteger(){
+            if( integerVariable == 0 )
             {
                 return false;
             }
