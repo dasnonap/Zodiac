@@ -32,7 +32,7 @@ namespace API.Controllers{
         [HttpGet("{id}")]
         public ActionResult<AppFilm> GetMovie( int id )
         {   
-            if( id == null ){
+            if( id == 0 ){
                 return null;
             }
             

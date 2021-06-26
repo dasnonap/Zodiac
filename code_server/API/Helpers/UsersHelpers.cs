@@ -14,7 +14,7 @@ namespace API.Helpers
             formData = data;
         }
 
-        public AppUser CreateUserObjectFromData( int typeId )
+        public AppUser CreateUserObjectFromData( int typeId, UserType type )
         {
             AppUser user = new AppUser();
 
@@ -80,6 +80,8 @@ namespace API.Helpers
             }
 
            user.UserTypeId = typeId;
+           
+           user.UserType = type;
 
            return user;
         }

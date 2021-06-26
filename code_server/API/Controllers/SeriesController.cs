@@ -33,7 +33,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public ActionResult<AppSeries> GetSeries( int id )
         {   
-            if( id == null ){
+            if( id == 0 ){
                 return null;
             }
             

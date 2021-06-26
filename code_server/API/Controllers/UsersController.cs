@@ -4,9 +4,11 @@ using API.Data;
 using API.Entities;
 using API.Helpers;
 using Microsoft.AspNetCore.Mvc;
-
+using System;
 namespace API.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
         private readonly DataContext _context;
@@ -39,10 +41,27 @@ namespace API.Controllers
 
         [HttpPost]
         public StatusCodeResult AddUser()
-        {
-            AppUser user = new UserConstructor( Request.Form ).CreateUserObjectFromData();
-
-            )
+        {   
+            int type_id = Int32.Parse( Request.Form["type"] );
+            UserType type = _context.Types.Find( type_id );
+            
+            AppUser user = new UserConstructor( Request.Form ).CreateUserObjectFromData( type_id, type );
+            
+            if( user == null )
+            {
+                return StatusCode( 500 );
+            }
+            
+            _context.Users.Add( user );
+            
+            int status = _context.SaveChanges();
+            
+            if( status == 0 )
+            {
+                return StatusCode(500);
+            }
+            
+            return StatusCode(200);
         }        
     }
 }
