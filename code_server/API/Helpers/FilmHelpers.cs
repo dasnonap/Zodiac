@@ -1,3 +1,4 @@
+using System.Net;
 using API.Entities;
 using API.Validators;
 using Microsoft.AspNetCore.Http;
@@ -23,6 +24,7 @@ namespace API.Helpers
             string year = formData["year"];
             string genres = formData["genres"];
             string actors = formData["actors"];
+            string poster_url = formData["posterImage"];
             string location = "none";
             
             if( new Validator( name ).IsValidField() )
@@ -68,6 +70,18 @@ namespace API.Helpers
             else
             {
                 return null;
+            }
+            
+            if( new Validator( poster_url ).IsValidField() )
+            {   
+                WebClient webClient = new WebClient();
+                if( poster_url == null )
+                {
+                    return null;
+                }
+                byte[] imageBytes = webClient.DownloadData(poster_url);
+                
+                film.PosterImage  = imageBytes;
             }
             
             film.Location = location;

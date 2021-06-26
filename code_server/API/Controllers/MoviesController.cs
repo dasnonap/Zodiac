@@ -1,12 +1,13 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using API.Data;
 using API.Entities;
 using API.Helpers;
-using API.Validators;
 using Microsoft.AspNetCore.Mvc;
-
-namespace API.Controllers{
+using System.Drawing;
+namespace API.Controllers
+{
     [ApiController]
     [Route("api/[controller]")]
     public class MoviesController : ControllerBase
@@ -39,7 +40,20 @@ namespace API.Controllers{
             var movie = _context.Films.Find( id );
             
             return movie;
-        }  
+        } 
+        
+         [HttpGet("image/{id}")]
+        public FileContentResult GetMovieImage( int id )
+        {   
+            if( id == 0 ){
+                return null;
+            }
+            
+            var movie = _context.Films.Find( id );
+            byte[] imageArray = movie.PosterImage;
+            
+           return File(imageArray, "image/jpg");
+        } 
         
         // Add Movie
         [HttpPost]

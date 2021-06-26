@@ -10,6 +10,7 @@ namespace API.Entities
 
         public string Actors { get; set; }
 
+        public byte[] PosterImage { get; set; }
         public string Year { get; set; }
 
         public string Genres { get; set; }

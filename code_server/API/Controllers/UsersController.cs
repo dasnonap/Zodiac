@@ -43,9 +43,8 @@ namespace API.Controllers
         public StatusCodeResult AddUser()
         {   
             int type_id = Int32.Parse( Request.Form["type"] );
-            UserType type = _context.Types.Find( type_id );
             
-            AppUser user = new UserConstructor( Request.Form ).CreateUserObjectFromData( type_id, type );
+            AppUser user = new UserConstructor( Request.Form ).CreateUserObjectFromData( type_id  );
             
             if( user == null )
             {
