@@ -85,8 +85,11 @@ namespace API.Controllers
         public StatusCodeResult ImportFilmsFromApi( int page )
         {      
             FilmImporter fm = new();
-
-            JToken films =  fm.LoadFilmsFromUrl( "http://www.omdbapi.com/?s=film&apikey=e8a33542" );
+            string search_param = HttpContext.Request.Query["search"].ToString();
+            
+            string url = "http://www.omdbapi.com/?s=" + search_param + "&apikey=e8a33542&page=" + page.ToString();
+            
+            JToken films =  fm.LoadFilmsFromUrl( url );
 
             if ( films == null ){
                 StatusCode( 500 );
@@ -106,19 +109,19 @@ namespace API.Controllers
                         continue;
                     } else {
                         _context.Films.Add( film );
+
+                        int status = _context.SaveChanges();
+            
+                        if( status == 0 )
+                        {
+                            return StatusCode(500);
+                        }
                     }
                 } else {
                     continue;
                 }
             }
 
-            int status = _context.SaveChanges();
-            
-            if( status == 0 )
-            {
-                return StatusCode(500);
-            }
-            
             return StatusCode(200);
         }
     }
