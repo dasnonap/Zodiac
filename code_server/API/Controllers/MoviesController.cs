@@ -7,6 +7,10 @@ using API.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
 using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Cors;
+using System.Text;
 
 namespace API.Controllers
 {
@@ -24,24 +28,28 @@ namespace API.Controllers
         
         // Get All Movies
         [HttpGet]
-        public ActionResult<IEnumerable<AppFilm>> GetMovies()
+        // [EnableCors("MyPolicy")]
+        public async Task<ActionResult<IEnumerable<AppFilm>>> GetMovies()
         {
-            var movies = _context.Films.ToList();
-            
-            return movies;
+            List<AppFilm> films =  await _context.Films.ToListAsync();
+
+            foreach( AppFilm film in films ){
+                film.PosterImage = Encoding.ASCII.GetBytes( "https://localhost:4223/api/movies/image/" + film.AppFilmId ) ;
+            }
+
+            return films;
         }
         
         // Get Single Movie TODO Render Movie Clip Action
         [HttpGet("{id}")]
-        public ActionResult<AppFilm> GetMovie( int id )
+        public async Task<ActionResult<AppFilm>> GetMovie( int id )
         {   
             if( id == 0 ){
                 return null;
             }
             
-            var movie = _context.Films.Find( id );
             
-            return movie;
+            return await _context.Films.FindAsync( id );
         } 
         
          [HttpGet("image/{id}")]
