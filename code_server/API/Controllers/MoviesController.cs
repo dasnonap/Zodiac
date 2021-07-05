@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -27,7 +28,7 @@ namespace API.Controllers
         }
         
         // Get All Movies
-        [HttpGet]
+        [HttpGet,Authorize]
         public async Task<ActionResult<IEnumerable<AppFilm>>> GetMovies()
         {
             List<AppFilm> films =  await _context.Films.ToListAsync();
@@ -40,7 +41,7 @@ namespace API.Controllers
         }
         
         // Get Single Movie TODO Render Movie Clip Action
-        [HttpGet("{id}")]
+        [HttpGet("{id}"),Authorize]
         public async Task<ActionResult<AppFilm>> GetMovie( int id )
         {   
             if( id == 0 ){
@@ -52,7 +53,7 @@ namespace API.Controllers
         } 
 
         // Get Movie per Pages
-        [HttpGet("listing")]
+        [HttpGet("listing"),Authorize]
         public async Task<ActionResult<IEnumerable<AppFilm>>> GetMoviePages( int page_id )
         {  
             int total_number =  _context.Films.Count();
@@ -71,7 +72,7 @@ namespace API.Controllers
             return films;
         } 
         
-         [HttpGet("image/{id}")]
+         [HttpGet("image/{id}"),Authorize]
         public ActionResult GetMovieImage( int id, int width, int height)
         {   
             Image image;
