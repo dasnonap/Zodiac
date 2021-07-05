@@ -1,8 +1,10 @@
+using System.Drawing;
 using System.Net;
 using API.Entities;
 using API.Validators;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
+using System.Drawing.Drawing2D;
 
 namespace API.Helpers
 {
@@ -165,6 +167,37 @@ namespace API.Helpers
             film.Location = location;
             
             return film;
+        }
+
+
+        public  Image resizeImage(Image imgToResize, Size size)  
+        {  
+            //Get the image current width  
+            int sourceWidth = imgToResize.Width;  
+            //Get the image current height  
+            int sourceHeight = imgToResize.Height;  
+            float nPercent = 0;  
+            float nPercentW = 0;  
+            float nPercentH = 0;  
+            //Calulate  width with new desired size  
+            nPercentW = ((float)size.Width / (float)sourceWidth);  
+            //Calculate height with new desired size  
+            nPercentH = ((float)size.Height / (float)sourceHeight);  
+            if (nPercentH < nPercentW)  
+                nPercent = nPercentH;  
+            else  
+            nPercent = nPercentW;  
+            //New Width  
+            int destWidth = (int)(sourceWidth * nPercent);  
+            //New Height  
+            int destHeight = (int)(sourceHeight * nPercent);  
+            Bitmap b = new Bitmap(destWidth, destHeight);  
+            Graphics g = Graphics.FromImage(b);  
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;  
+            // // Draw image with new width and height  
+            g.DrawImage(imgToResize, 0, 0, size.Width, size.Height);  
+            g.Dispose();  
+            return b;  
         }
     }
 }

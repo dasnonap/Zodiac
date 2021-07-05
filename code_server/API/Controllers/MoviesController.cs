@@ -28,7 +28,6 @@ namespace API.Controllers
         
         // Get All Movies
         [HttpGet]
-        // [EnableCors("MyPolicy")]
         public async Task<ActionResult<IEnumerable<AppFilm>>> GetMovies()
         {
             List<AppFilm> films =  await _context.Films.ToListAsync();
@@ -51,18 +50,56 @@ namespace API.Controllers
             
             return await _context.Films.FindAsync( id );
         } 
+
+        // Get Movie per Pages
+        [HttpGet("listing")]
+        public async Task<ActionResult<IEnumerable<AppFilm>>> GetMoviePages( int page_id )
+        {  
+            int total_number =  _context.Films.Count();
+            int page_size = 10;
+
+            if( total_number / page_size < page_id ){
+                return null;
+            }
+
+            List<AppFilm> films = await _context.Films.Skip( ( page_id - 1 ) * page_size ).Take(page_size).ToListAsync();
+
+            foreach( AppFilm film in films ){
+                film.PosterImage = Encoding.ASCII.GetBytes( "https://localhost:4223/api/movies/image/" + film.AppFilmId ) ;
+            }
+
+            return films;
+        } 
         
          [HttpGet("image/{id}")]
-        public FileContentResult GetMovieImage( int id )
+        public ActionResult GetMovieImage( int id, int width, int height)
         {   
+            Image image;
             if( id == 0 ){
+                return null;
+            }
+
+            if ( width == 0 && height == 0 ){
                 return null;
             }
             
             var movie = _context.Films.Find( id );
             byte[] imageArray = movie.PosterImage;
             
-           return File(imageArray, "image/jpg");
+            using (MemoryStream mStream = new MemoryStream(imageArray))
+            {
+                image = Image.FromStream(mStream);
+            }
+
+            Bitmap b = new Bitmap(image); 
+
+            Image resized_image = new FilmConstructor().resizeImage(b, new Size(width, height));
+
+            MemoryStream ms = new MemoryStream();
+
+            resized_image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+            return File(ms.ToArray(), "image/png");
         } 
         
         // Add Movie
