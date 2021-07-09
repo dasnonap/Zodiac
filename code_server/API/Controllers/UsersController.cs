@@ -35,9 +35,9 @@ namespace API.Controllers
         public IActionResult Login()
         {   
             AppUser user = new AppUser();
+            
             user.UserName = Request.Form["username"];
             user.Password = Request.Form["password"];
-
             if (user == null)
             {
                 return BadRequest("Invalid client request");

@@ -72,7 +72,7 @@ namespace API.Controllers
             return films;
         } 
         
-         [HttpGet("image/{id}"),Authorize]
+         [HttpGet("image/{id}")]
         public ActionResult GetMovieImage( int id, int width, int height)
         {   
             Image image;
