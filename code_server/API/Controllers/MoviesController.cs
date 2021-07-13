@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Web;
 using System.Linq;
 using API.Data;
 using API.Entities;
@@ -12,6 +13,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Http;
+using System.Net;
+using Microsoft.AspNetCore.Hosting;
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Http;
+using System;
 
 namespace API.Controllers
 {
@@ -19,7 +26,7 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class MoviesController : ControllerBase
     {
-        
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly DataContext _context;
         
         public MoviesController( DataContext context )
@@ -51,6 +58,14 @@ namespace API.Controllers
             
             return await _context.Films.FindAsync( id );
         } 
+
+        [HttpGet("movie")]
+        public IActionResult  Stream(string id) {
+            var path = @"D:\Downloads\test.mp4";
+            var res = File(System.IO.File.OpenRead(path), "video/mp4");
+            res.EnableRangeProcessing = true;
+            return res;
+        }
 
         // Get Movie per Pages
         [HttpGet("listing"),Authorize]
