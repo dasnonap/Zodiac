@@ -18,6 +18,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using API.Repositories;
 
 namespace API
 {
@@ -59,6 +60,8 @@ namespace API
                 builder => builder.AllowAnyOrigin()
             ));
             services.AddControllers();
+
+            services.AddScoped<FilmRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

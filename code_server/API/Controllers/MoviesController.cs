@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Http;
 using System;
+using API.Repositories;
 
 namespace API.Controllers
 {
@@ -26,42 +27,35 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class MoviesController : ControllerBase
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly DataContext _context;
-        
+        private FilmRepo _films;
         public MoviesController( DataContext context )
         {
             _context = context;
+            _films = new FilmRepo( _context );
         }
         
         // Get All Movies
         [HttpGet,Authorize]
-        public async Task<ActionResult<IEnumerable<AppFilm>>> GetMovies()
+        public IEnumerable<AppFilm> GetMovies()
         {
-            List<AppFilm> films =  await _context.Films.ToListAsync();
-
-            foreach( AppFilm film in films ){
-                film.PosterImage = Encoding.ASCII.GetBytes( "https://localhost:4223/api/movies/image/" + film.AppFilmId ) ;
-            }
-
-            return films;
+            return _films.GetRepoFilms();
         }
         
         // Get Single Movie TODO Render Movie Clip Action
         [HttpGet("{id}"),Authorize]
-        public async Task<ActionResult<AppFilm>> GetMovie( int id )
+        public ActionResult<AppFilm> GetMovie( int id )
         {   
             if( id == 0 ){
                 return null;
             }
             
-            
-            return await _context.Films.FindAsync( id );
+            return _films.GetRepoFilm( id );
         } 
 
         [HttpGet("movie")]
         public IActionResult  Stream(string id) {
-            var path = @"D:\Downloads\test.mp4";
+            var path = @"D:\Университет\4 курс\Дипломна работа\videos\test.mp4";
             var res = File(System.IO.File.OpenRead(path), "video/mp4");
             res.EnableRangeProcessing = true;
             return res;
@@ -69,22 +63,17 @@ namespace API.Controllers
 
         // Get Movie per Pages
         [HttpGet("listing"),Authorize]
-        public async Task<ActionResult<IEnumerable<AppFilm>>> GetMoviePages( int page_id )
+        public IEnumerable<AppFilm> GetMoviePages( int page_id )
         {  
-            int total_number =  _context.Films.Count();
-            int page_size = 10;
+            return _films.GetFilmsListing( page_id );
+        } 
 
-            if( total_number / page_size < page_id ){
-                return null;
-            }
-
-            List<AppFilm> films = await _context.Films.Skip( ( page_id - 1 ) * page_size ).Take(page_size).ToListAsync();
-
-            foreach( AppFilm film in films ){
-                film.PosterImage = Encoding.ASCII.GetBytes( "https://localhost:4223/api/movies/image/" + film.AppFilmId ) ;
-            }
-
-            return films;
+        // Search Movies
+        [HttpGet("search"),Authorize]
+        public IEnumerable<AppFilm> GetSearchResultPages( string s )
+        {  
+            
+            return _films.GetSearchResults( s );
         } 
         
          [HttpGet("image/{id}")]
@@ -99,9 +88,9 @@ namespace API.Controllers
                 return null;
             }
             
-            var movie = _context.Films.Find( id );
+            var movie = _films.GetImageFilm( id );
             byte[] imageArray = movie.PosterImage;
-            
+
             using (MemoryStream mStream = new MemoryStream(imageArray))
             {
                 image = Image.FromStream(mStream);
