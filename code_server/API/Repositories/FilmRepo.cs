@@ -122,5 +122,34 @@ namespace API.Repositories
 
             return result;
         }
+
+        public List<AppFilm> GetCategoryResults( string category ){
+            
+            if( category == null ){
+                return null;
+            }
+            category = category.ToLower();
+
+            List<AppFilm> result = new List<AppFilm>();
+
+            foreach( AppFilm film in _films ){
+                AppFilm film_result = null;
+                
+                
+                if( film.Genres.ToLower().Contains( category ) ){
+                   film_result = film;
+                } else {
+                    film_result = null;
+                }
+
+                if( film_result != null ){
+                    film_result.PosterImage = Encoding.ASCII.GetBytes( "https://localhost:4223/api/movies/image/" + film_result.AppFilmId ) ;
+
+                    result.Add( film_result );
+                }
+            }
+
+            return result;
+        }
     }
 }

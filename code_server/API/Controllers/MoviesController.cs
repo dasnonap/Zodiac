@@ -75,6 +75,13 @@ namespace API.Controllers
             
             return _films.GetSearchResults( s );
         } 
+
+        [HttpGet("category"),Authorize]
+        public IEnumerable<AppFilm> GetCategoryResultPages( string c )
+        {  
+            
+            return _films.GetCategoryResults( c );
+        } 
         
          [HttpGet("image/{id}")]
         public ActionResult GetMovieImage( int id, int width, int height)
