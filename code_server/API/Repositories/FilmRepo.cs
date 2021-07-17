@@ -151,5 +151,20 @@ namespace API.Repositories
 
             return result;
         }
+
+        public string GetMovieLocation( int id ){
+            if( id == 0 ){
+                return null;
+            }
+
+            foreach( AppFilm film in _films ){
+                if( film.AppFilmId == id ){
+                    return film.Location;
+                }
+               
+            }
+
+            return null;
+        }
     }
 }

@@ -54,8 +54,9 @@ namespace API.Controllers
         } 
 
         [HttpGet("movie")]
-        public IActionResult  Stream(string id) {
-            var path = @"D:\Университет\4 курс\Дипломна работа\videos\test.mp4";
+        public IActionResult  Stream( int id ) {
+            // var path = @"D:\Университет\4 курс\Дипломна работа\videos\test.mp4";
+            var path = _films.GetMovieLocation( id );
             var res = File(System.IO.File.OpenRead(path), "video/mp4");
             res.EnableRangeProcessing = true;
             return res;
