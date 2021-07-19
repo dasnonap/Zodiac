@@ -19,11 +19,11 @@ namespace API.Helpers
             AppUser user = new AppUser();
 
             string username = formData["username"];
-            string firstName = formData["first-name"];
-            string lastName = formData["last-name"];
+            string firstName = formData["fname"];
+            string lastName = formData["lname"];
             string password = formData["password"];
-            string iban = formData["iban"];
             string email = formData["email"];
+            string iban = formData["iban"];
 
             if( new Validator( username ).IsValidField() )
             {

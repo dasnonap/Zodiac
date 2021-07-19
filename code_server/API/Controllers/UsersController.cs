@@ -62,6 +62,40 @@ namespace API.Controllers
             }
         }
 
+        [HttpPost("register")]
+        public IActionResult Register()
+        {   int type_id  = 1;
+            AppUser user = new UserConstructor( Request.Form ).CreateUserObjectFromData( type_id  );
+            
+            if( user == null )
+            {
+                return StatusCode( 500 );
+            }
+            
+            _context.Users.Add( user );
+            
+            int status = _context.SaveChanges();
+            
+            if( status == 0 )
+            {
+                return StatusCode(500);
+            }
+            
+           
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
+            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            var tokeOptions = new JwtSecurityToken(
+                issuer: "https://localhost:4223",
+                audience: "http://localhost:4200",
+                claims: new List<Claim>(),
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: signinCredentials
+            );
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+            return Ok(new { Token = tokenString });
+
+        }
+
         [HttpGet("{id}")]
         public ActionResult<AppUser> GetUser( int id )
         {
