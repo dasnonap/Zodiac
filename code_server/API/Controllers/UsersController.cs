@@ -10,6 +10,7 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
+
 namespace API.Controllers
 {
     [ApiController]
@@ -42,14 +43,29 @@ namespace API.Controllers
             {
                 return BadRequest("Invalid client request");
             }
-            if (user.UserName == "johndoe" && user.Password == "def@123")
+
+            var users = _context.Users.ToList();
+            AppUser logged = new AppUser();
+            foreach( AppUser _user in users ){
+                if( user.UserName == _user.UserName ){
+                    if( user.Password == _user.Password ){
+                        logged = user;
+                    }
+                }
+            }
+
+            if ( logged != null )
             {
+                var claims = new[] {    
+                    new Claim("username", logged.UserName ),    
+                    new Claim("id", logged.AppUserId.ToString() )   
+                };  
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
                 var tokeOptions = new JwtSecurityToken(
                     issuer: "https://localhost:4223",
                     audience: "http://localhost:4200",
-                    claims: new List<Claim>(),
+                    claims: claims,
                     expires: DateTime.Now.AddMinutes(30),
                     signingCredentials: signinCredentials
                 );
@@ -61,6 +77,7 @@ namespace API.Controllers
                 return Unauthorized();
             }
         }
+
 
         [HttpPost("register")]
         public IActionResult Register()
